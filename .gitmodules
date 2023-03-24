@@ -1,0 +1,3 @@
+[submodule "API/finvizAPI"]
+	path = API/finvizAPI
+	url = https://github.com/NAVNAV221/finvizAPI.git
