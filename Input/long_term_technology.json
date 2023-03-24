@@ -1,0 +1,21 @@
+{
+  "filter_type": {
+    "screener": {
+      "screener_platform": "FINVIZ",
+      "filters": {
+        "Index": {
+          "S&P 500": "idx_sp500"
+        },
+        "Market Cap.": {
+          "-Mid (under $10bln)": "cap_midunder"
+        },
+        "Sector": {
+          "Technology": "sec_technology"
+        },
+        "Gross Margin": {
+          "Over 25%": "fa_grossmargin_o25"
+        }
+      }
+    }
+  }
+}

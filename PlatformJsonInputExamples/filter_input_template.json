@@ -1,0 +1,9 @@
+{
+  "filter_type": {
+    "screener": {
+      "screener_platform": "{platform}",
+      "filters": {
+      }
+    }
+  }
+}
