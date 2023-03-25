@@ -3,18 +3,14 @@
     "screener": {
       "screener_platform": "FINVIZ",
       "filters": {
-        "Index": {
-          "S&P 500": "idx_sp500"
-        },
-        "Market Cap.": {
-          "-Mid (under $10bln)": "cap_midunder"
-        },
-        "Sector": {
-          "Technology": "sec_technology"
-        },
-        "Gross Margin": {
-          "Over 25%": "fa_grossmargin_o25"
-        }
+        "Market Cap.": "+Small (over $300mln)",
+        "20-Day Simple Moving Average": "Price above SMA20",
+        "50-Day Simple Moving Average": "Price above SMA50",
+        "Sales growthpast 5 years": "Over 10%",
+        "Average Volume": "Over 500K",
+        "Relative Volume": "Over 1.5",
+        "Pattern": "Horizontal S/R",
+        "Country": "USA"
       }
     }
   }
