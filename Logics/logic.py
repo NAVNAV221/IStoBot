@@ -9,13 +9,12 @@ class Logic(ABC):
 
     def __init__(self):
         self._set_logger()
-        pass
 
     def main(self, **kwargs):
         """
         Logic main function.
         """
-        pass
+        raise NotImplementedError("Main function not implemented")
 
     def _set_logger(self) -> None:
         """
