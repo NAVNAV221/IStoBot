@@ -45,7 +45,7 @@ class FinvizScreener(Screener):
         "filters": {
             "Market Cap.": "+Small (over $300mln)"
         }
-        We'll return only: cap_smallover
+        We'll return only: cap_smallover, which is how Finviz API understand it
 
         :param filters_user_input:
         :return:
