@@ -35,22 +35,3 @@ class Symbol(object):
         highest_price: Dict[Timestamp, float] = {close_price_date: close_price}
 
         return highest_price
-
-
-
-if __name__ == '__main__':
-    msft = Symbol(ticker='MSFT')
-    print(msft.current_price)
-    res = msft.get_highest_price()
-
-    for k, v in res.items():
-        print(v)
-    # msft = yf_package.Ticker("MSFT")
-    # # get all stock info (slow)
-    # msft.info
-    # # fast access to subset of stock info (opportunistic)
-    # msft.fast_info
-    #
-    # # get historical market data
-    # hist = msft.history(period='5y', interval='1mo')
-    # print(hist.iterrows())
