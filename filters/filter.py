@@ -51,11 +51,11 @@ class Filter(ABC):
         """
         data = {}
 
-        for json_input_file in os.listdir(Consts.PROJECT_JSON_INPUT_PATH):
+        for json_input_file in os.listdir(Consts.PROJECT_JSON_INPUT_RELATIVE_PATH):
 
             if json_input_file.endswith('.json'):
                 print(f"Identify input file: {json_input_file}")
-                json_input_file_path = Path(Consts.PROJECT_JSON_INPUT_PATH).joinpath(json_input_file)
+                json_input_file_path = Path(Consts.PROJECT_JSON_INPUT_RELATIVE_PATH).joinpath(json_input_file)
 
                 with open(json_input_file_path, 'r') as json_file:
                     data = json.load(json_file)
