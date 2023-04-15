@@ -15,12 +15,13 @@ class Filter(ABC):
     This class provide a basic structure to build multiple filter structure, such as screeners, analyst recommendation, and more ...
     """
 
-    def __init__(self):
+    def __init__(self, input_data: Dict = None):
+        self.input_data = self.parse_input() if not input_data else input_data
         self.check_filter_syntax()
 
         # Get filter type name (from the inherited class name)
         # self.filter_type = None
-        self.input_data = self.parse_input()
+        # self.input_data = self.parse_input()
 
     @property
     def filter_type(self):
@@ -69,4 +70,4 @@ class Filter(ABC):
         Each platform have multiple outputs structures.
         :return:
         """
-        pass
+        raise NotImplementedError('parse_output function not implemented !')

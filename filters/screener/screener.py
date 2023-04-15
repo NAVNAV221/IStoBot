@@ -9,10 +9,10 @@ class Screener(Filter, ABC):
     Screener is actually a filter for stocks that meet several criteria.
     """
 
-    def __init__(self, platform: str):
+    def __init__(self, platform: str, input_data: Dict = None):
+        super().__init__(input_data)
         self.platform: str = platform
-        self.input_data: Dict = self.parse_input()
-        self.check_screener_syntax()
+        # self.check_screener_syntax()
 
     @property
     def screener_data(self):
