@@ -20,3 +20,4 @@ if __name__ == '__main__':
     )
     for res in response.results:
         print(res.symbol)
+        #TODO: Try to buy things.
