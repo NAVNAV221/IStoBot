@@ -1,5 +1,6 @@
 import logging
 from abc import ABC
+from uuid import uuid4
 
 
 class Logic(ABC):
@@ -8,6 +9,7 @@ class Logic(ABC):
     """
 
     def __init__(self):
+        self._id = uuid4()
         self._set_logger()
 
     def main(self, **kwargs):
@@ -20,7 +22,7 @@ class Logic(ABC):
         """
         Set a Logic logger
         """
-        logger = logging.getLogger(__name__)
+        logger = logging.getLogger(self.__module__)
         logger.setLevel(logging.INFO)
 
         # define handler and formatter
@@ -39,4 +41,7 @@ class Logic(ABC):
         """
         Function that runs Logic's main function.
         """
-        self.main(**kwargs)
+        return self.main(**kwargs)
+
+if __name__ == '__main__':
+    a = Logic()
