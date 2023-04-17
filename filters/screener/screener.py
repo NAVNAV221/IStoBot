@@ -12,7 +12,7 @@ class Screener(Filter, ABC):
     def __init__(self, platform: str, input_data: Dict = None):
         super().__init__(input_data)
         self.platform: str = platform
-        # self.check_screener_syntax()
+        self.check_screener_syntax()
 
     @property
     def screener_data(self):
