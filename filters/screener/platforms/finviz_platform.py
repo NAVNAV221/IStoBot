@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Dict
 
 from API.finvizAPI.finviz.screener import Screener as finviz_scanner_api
 from filters.screener.screener import Screener
@@ -10,8 +10,8 @@ class FinvizScreener(Screener):
     There is a Github repo that provide access to their API.
     """
 
-    def __init__(self):
-        super().__init__(platform='finviz')
+    def __init__(self, input_data: Dict = None):
+        super().__init__(platform='finviz', input_data=input_data)
 
     @property
     def filters_api_format(self) -> List[str]:
@@ -63,9 +63,14 @@ class FinvizScreener(Screener):
 
 
 if __name__ == '__main__':
-    finviz_screener = FinvizScreener()
-    # matched_tickers = finviz_screener.get_matched_tickers()
-    # print(matched_tickers)
-    print(finviz_screener.filters_api_format)
-    f = finviz_scanner_api(filters=finviz_screener.filters_api_format)
+    input_data = {'filter_type': {'screener': {'screener_platform': 'FINVIZ', 'filters': {'Market Cap.': '+Small (over $300mln)'}}}}
+    finviz_screener_one = FinvizScreener(input_data=input_data)
 
+    # print(finviz_screener_one.filters_api_format)
+    #
+    matched_tickers = finviz_screener_one.get_matched_tickers()
+    # print(matched_tickers)
+    # print(finviz_screener.filters_api_format)
+    # f = finviz_scanner_api(filters=finviz_screener.filters_api_format)
+
+    # print(matched_tickers)
