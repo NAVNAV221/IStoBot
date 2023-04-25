@@ -1,7 +1,7 @@
 import logging
 
 
-def get_logger() -> None:
+def get_logger() -> logging.Logger:
     """
     Set a Logic logger
     """
