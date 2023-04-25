@@ -2,7 +2,7 @@ import pandas as pd
 import yfinance
 from backtesting import Backtest, Strategy
 from backtesting.lib import crossover
-from backtesting.test import SMA, GOOG
+from backtesting.test import SMA
 
 COLUMN_AXIS = 1
 
@@ -31,17 +31,13 @@ def prepare_stock_to_backtest_class(ticker: str) -> pd.DataFrame:
     return prepared_ticker_history
 
 
-
-
 def main():
-    g = yfinance.Ticker('GOOG')
-    x = prepare_stock_to_backtest_class('GOOG')
-    print(x)
+    x = prepare_stock_to_backtest_class('TSLA')
     bt = Backtest(x, SmaCross,
                   cash=10000, commission=.002,
                   exclusive_orders=True)
     output = bt.run()
-    print(output)
+    # print(output)
     # bt.plot()
 
 
