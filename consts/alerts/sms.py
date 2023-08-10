@@ -21,3 +21,7 @@ class Templates:
     -------------------
     {matched_wanted_tickers}
     """
+    BUYING_ACTION_SMS = """
+    IStoBot buy action done 📈:
+    {ticker} | {units} units
+    """
