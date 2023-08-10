@@ -115,10 +115,10 @@ Filter object responsible to direct each request to it's relevant filter type.
 
 ```json
 {
-  'filter_type': {
-    '<filter system types>': {
-      '<filter system key 1>': '<filter system value 1>',
-      '<filter system key 2>': '<filter system value 2>'
+  "filter_type": {
+    "<filter system types>": {
+      "<filter system key 1>": "<filter system value 1>",
+      "<filter system key 2>": "<filter system value 2>"
     }
   }
 }
