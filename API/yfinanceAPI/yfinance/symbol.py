@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 from functools import cached_property, lru_cache
-from typing import Dict, List
+from typing import Dict, List, Union
 
 import yfinance as yf_package
 from pandas import Series, DataFrame, Timestamp
