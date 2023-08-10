@@ -1,6 +1,6 @@
 from typing import Dict
 
-from Logics.logic import Logic
+from bot.logics import Logic
 
 
 class Types:
