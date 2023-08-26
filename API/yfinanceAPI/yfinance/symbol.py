@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 from functools import cached_property, lru_cache
-from typing import Dict, List, Union
+from typing import Dict, List, Union, Type
 
 import yfinance as yf_package
 from pandas import Series, DataFrame, Timestamp
@@ -12,8 +12,8 @@ class Symbol(object):
 
     def __init__(self, ticker: str, start_date: datetime, end_date: datetime):
         self.ticker = ticker
-        self.start_date: datetime = start_date,
-        self.end_date: datetime = end_date,
+        self.start_date: datetime = start_date
+        self.end_date: datetime = end_date
         self.api_obj = yf_package.Ticker(self.ticker)
 
     @cached_property
@@ -22,7 +22,7 @@ class Symbol(object):
 
     @cached_property
     def current_price(self) -> float:
-        return self.api_obj.info.get('regularMarketPrice')
+        return self.api_obj.info.get('currentPrice')
 
     @lru_cache
     def history(self, period='1y', interval='1wk', start_date: datetime = datetime.now() - timedelta(days=365),
@@ -95,8 +95,8 @@ class Symbol(object):
         return abs(price_1 - price_2)
 
     # TODO: Change stock_close_price_history to stock_history_candles: List[Candle]
-    def group_candle_between_price_delta(self, stock_history_candles: DataFrame, delta_price: Union
-    [float, int]) -> Dict[List[Candle, Candle]: float]:
+    def group_candle_between_price_delta(self, stock_history_candles: DataFrame,
+                                         delta_price: Union[float, int]) -> Dict[List[Type[Candle]], float]:
         """
         Example:
         stock close price history: (10.1, 13.2, 11.3, 9.2, 14.3)
@@ -147,13 +147,8 @@ if __name__ == '__main__':
     start_date = datetime.now() - timedelta(days=120)
     end_date = datetime.now()
 
-    s = Symbol(ticker='WWE', start_date=start_date, end_date=end_date)
+    s = Symbol(ticker='GOOG', start_date=start_date, end_date=end_date)
+    print(s.current_price)
 
-    h = s.history(period='1y', interval='1wk')
-
-    h['Date'] = h.index
-
-    print(h)
-
-    # candle_groups_price_delta = s.group_candle_between_price_delta(stock_close_price_history=h, delta_price=1.5)
-    # print(candle_groups_price_delta)
+# candle_groups_price_delta = s.group_candle_between_price_delta(stock_close_price_history=h, delta_price=1.5)
+# print(candle_groups_price_delta)
