@@ -46,6 +46,10 @@ Each code logic found in this folder. We'll use them during symbol Flows and mor
 ## Flows
 
 We can create scenarios and act upon them; Alert via SMS, Suggest buying symbol and more ...
+UI overview:
+![image](https://github.com/NAVNAV221/IStoBot/assets/52596137/47c09539-68ff-4ce7-af7f-80e2aa8f1c3e)
+
+Code overview:
 
 ```python
 from typing import List
