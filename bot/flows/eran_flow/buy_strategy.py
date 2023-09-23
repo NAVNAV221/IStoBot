@@ -1,35 +1,38 @@
-from core.components.symbol import Symbol
 from datetime import datetime, timedelta
-import matplotlib.dates as mpdates
-import pandas as pd
+from typing import List
 
-from API.yfinanceAPI.yfinance.symbol import Symbol
-from API.yfinanceAPI.yfinance.symbol import Symbol
-from core.components.symbol.utils.doubles import find_local_maximas_minimas, find_doubles_patterns
+from pandas import DataFrame
+
+from core.components.symbol import Symbol
+from core.components.symbol.utils.doubles import get_last_double_top, get_last_double_bottom
 
 
 def main():
     start_date = datetime.now() - timedelta(days=120)
     end_date = datetime.now()
-    # relevant_tickers = ['SCJ', 'FDEM', 'DFSE', 'DFAE', 'AADR', 'ONYX', 'SFWL', 'PCOR', 'MNST', 'EGP', 'PCGU', 'IX',
-    #                     'AVEM', 'HY',
-    #                     'CNTG', 'PANL', 'EQX']
-    relevant_tickers = ['LQDH']
+
+    relevant_tickers = ['GOOG']
 
     for ticker in relevant_tickers:
         s = Symbol(ticker=ticker, start_date=start_date, end_date=end_date)
-        s_history = s.history(period='1y', interval='1wk')
 
+        double_top_candles: List[DataFrame] = get_last_double_top(symbol=s.yahoo_api_obj)
+        print(f"double_top_candles: {double_top_candles}")
 
-        # Find all the local minimas and maximas
-        window_range = 10  # Defining the local range where min and max will be found
-        max_min = find_local_maximas_minimas(s_history, window_range, smooth=True)
-        print(max_min)
+        double_bottom_candles: List[DataFrame] = get_last_double_bottom(symbol=s.yahoo_api_obj)
+        print(f"double_bottom_candles: {double_bottom_candles}")
 
-        # Find the tops and bottoms
-        patterns_tops, patterns_bottoms = find_doubles_patterns(max_min)
+        double_top_candles_avg = double_top_candles['Close'].mean()
+        print(f"double_top_candles_avg: {double_top_candles_avg}")
 
-        print(f"patterns_tops: {patterns_tops}\npatterns_bottoms: {patterns_bottoms}")
+        double_bottom_candles_avg = double_bottom_candles['Close'].mean()
+        print(f"double_bottom_candles_avg: {double_bottom_candles_avg}")
+
+        print(f"entry: {s.yahoo_api_obj.current_price}", f"stop: {double_bottom_candles_avg}",
+              f"target: {double_top_candles_avg}")
+        risk_reward_ratio = s.risk_reward_ratio(entry=s.yahoo_api_obj.current_price, stop=double_bottom_candles_avg,
+                                                target=double_top_candles_avg)
+        print(f"risk_reward_ratio: {risk_reward_ratio}")
 
 
 if __name__ == '__main__':

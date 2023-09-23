@@ -1,7 +1,7 @@
 import typing
 from datetime import datetime, timedelta
 
-from API.yfinanceAPI.yfinance.symbol import Symbol
+from API.yfinanceAPI.yfinance.yfinancesymbol import YfinanceSymbol
 
 
 def wilders_rsi(data: typing.List[float or int], window_length: int,
@@ -112,7 +112,7 @@ if __name__ == '__main__':
     start_date = datetime.now() - timedelta(days=360)
     end_date = datetime.now()
 
-    s = Symbol(ticker='AAPL', start_date=start_date, end_date=end_date)
+    s = YfinanceSymbol(ticker='AAPL', start_date=start_date, end_date=end_date)
 
     h = s.history(period='1y', interval='1d')
     h_close_prices = list(h.loc[:, 'Close'].values)

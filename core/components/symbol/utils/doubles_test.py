@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 import numpy as np
 import pandas
 
-from API.yfinanceAPI.yfinance.symbol import Symbol
+from API.yfinanceAPI.yfinance.yfinancesymbol import YfinanceSymbol
 from core.components.symbol.utils.rsi import wilders_rsi
 
 ALLOWED_RSI_CHANGE_GAP = 3
@@ -117,7 +117,7 @@ def main():
     start_date = datetime.now() - timedelta(days=360)
     end_date = datetime.now()
 
-    s = Symbol(ticker='AAPL', start_date=start_date, end_date=end_date)
+    s = YfinanceSymbol(ticker='AAPL', start_date=start_date, end_date=end_date)
 
     h = s.history(period='1y', interval='1d')
     h_close_prices = list(h.loc[:, 'Close'].values)

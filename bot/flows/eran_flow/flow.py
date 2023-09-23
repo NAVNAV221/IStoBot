@@ -1,5 +1,10 @@
-from bot.flows.flow import Flow
+from datetime import datetime, timedelta
+
 from bot.filters.screener.platforms.finviz_platform import FinvizScreener
+from bot.flows.flow import Flow
+from core.components.symbol import Symbol
+from core.components.symbol.utils.risk_reward import risk_reward_ratio
+from core.components.symbol.utils.support_resistance_finder import min_support_and_max_resistance_prices
 
 
 class EranFlow(Flow):
@@ -55,7 +60,41 @@ class EranFlow(Flow):
             f"channel_up_screener intersect double_bottom_screener length: {channel_up_double_bottom_stock}")
 
         matched_scanner_tickers: set = channel_up_double_top_stock.union(channel_up_double_bottom_stock)
+        # matched_scanner_tickers: set = matched_scanner_tickers.intersection(channel_up_double_bottom_stock)
         self.logger.info(f'matched_scanner_tickers: {matched_scanner_tickers}')
+
+        for ticker in matched_scanner_tickers:
+            self.logger.info(f"TICKER: {ticker}")
+
+            s = Symbol(ticker=ticker, end_date=end_date, start_date=start_date)
+
+            min_support_and_max_resistance_prices_df = min_support_and_max_resistance_prices(s.ticker, s.start_date,
+                                                                                             s.end_date)
+
+            if not min_support_and_max_resistance_prices_df.empty:
+
+                min_support_price = float(
+                    min_support_and_max_resistance_prices_df[min_support_and_max_resistance_prices_df[
+                                                                 "Support or Resistance"] == "Support"].Price)
+                max_resistance_price = float(
+                    min_support_and_max_resistance_prices_df[min_support_and_max_resistance_prices_df[
+                                                                 "Support or Resistance"] == "Resistance"].Price)
+
+                s_rrr = risk_reward_ratio(entry=s.yahoo_api_obj.current_price, target=max_resistance_price,
+                                          stop=min_support_price)
+
+                self.logger.info(f"min_support_price: {min_support_price}")
+                self.logger.info(f"max_resistance_price: {max_resistance_price}")
+
+                self.logger.info(f"TICKER: {s.ticker} | RRR: {s_rrr}")
+            else:
+                self.logger.info(f"TICKER: {s.ticker} | RRR: UNKNOWN - Can't get support & resistance levels")
+
+        #
+        #     double_buttom_candles = get_last_double_buttom(s)
+        #     double_top_candles = get_last_double_top(s)
+        #
+        #     s.risk_reward_ratio(entry=s.price, stop=double_buttom_candles[0]['Close'], target=double_top_candles[0]['Close'])
 
         # alert = Sms()
         # client = Client()
@@ -91,8 +130,11 @@ class EranFlow(Flow):
         #
         #     except Exception as err:
         #         self.logger.info(f'Cant buy stock according to the following errors: {err}')
-        #
+
 
 if __name__ == '__main__':
+    end_date = datetime.now()
+    start_date = end_date - timedelta(days=30)
+
     s = EranFlow()
     s.run()
