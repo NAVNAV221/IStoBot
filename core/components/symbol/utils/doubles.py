@@ -11,10 +11,11 @@ from datetime import datetime, timedelta
 
 import pandas as pd
 
-from API.yfinanceAPI.yfinance.symbol import Symbol
+from API.yfinanceAPI.yfinance.yfinancesymbol import YfinanceSymbol
+# from core.components.symbol.symbol import Symbol
 
 
-def get_last_double_top(symbol: Symbol):
+def get_last_double_top(symbol: YfinanceSymbol):
     """
     Return last two maxima points. Necessary columns are 'Date' and 'Close'
     :param maxima_candles: Maximan candles we found.
@@ -31,16 +32,17 @@ def get_last_double_top(symbol: Symbol):
     return double_top_candles
 
 
-def get_last_double_buttom(symbol: Symbol):
+def get_last_double_bottom(symbol: YfinanceSymbol):
     """
     Return last two maxima points. Necessary columns are 'Date' and 'Close'
     :param maxima_candles: Maximan candles we found.
     :return: List of double top points.
     """
-    s_history = symbol.api_obj.history()
+    s_history = symbol.history()
 
     minima_candles = get_local_minima(s_history)
     ordered_candles = minima_candles.sort_values(by=['Date'], ascending=False)
+    print(f"ordered_candles: {ordered_candles}")
     double_buttom_candles = ordered_candles['Close'].nsmallest(2)
 
     double_buttom_candles = s_history.loc[double_buttom_candles.index]
@@ -49,7 +51,7 @@ def get_last_double_buttom(symbol: Symbol):
     return double_buttom_candles
 
 
-def get_local_maxima(stock_history: pd.DataFrame, windows_range: int = 3) -> pd.DataFrame:
+def get_local_maxima(stock_history: pd.DataFrame, windows_range: int = 5) -> pd.DataFrame:
     """
     Find local maxima extreme points in stock graph.
     :param stock_history: Stock data history. Necessary columns are: 'Close'.
@@ -74,7 +76,7 @@ def get_local_maxima(stock_history: pd.DataFrame, windows_range: int = 3) -> pd.
     return local_maxima_points
 
 
-def get_local_minima(stock_history: pd.DataFrame, windows_range: int = 3) -> pd.DataFrame:
+def get_local_minima(stock_history: pd.DataFrame, windows_range: int = 5) -> pd.DataFrame:
     """
     Find local minimas extreme points in stock graph.
     :param stock_history: Stock data history. Necessary columns are: 'Close'.
@@ -101,7 +103,7 @@ def get_local_minima(stock_history: pd.DataFrame, windows_range: int = 3) -> pd.
 if __name__ == "__main__":
     start_date = datetime.now() - timedelta(days=360)
     end_date = datetime.now()
-    ticker = 'FIDI'
+    ticker = 'GOOG'
 
-    s = Symbol(ticker=ticker, start_date=start_date, end_date=end_date)
-    print(get_last_double_buttom(s))
+    s = YfinanceSymbol(ticker=ticker, start_date=start_date, end_date=end_date)
+    print(get_last_double_bottom(s))

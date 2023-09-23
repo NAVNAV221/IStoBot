@@ -1,11 +1,11 @@
 from datetime import datetime
-from API.yfinanceAPI.yfinance.symbol import Symbol
+from API.yfinanceAPI.yfinance.yfinancesymbol import YfinanceSymbol
 from bot.logics import Logic
 
 
 class TickerPercentageFromBottom(Logic):
     @staticmethod
-    def get_market_highest_price(symbol: Symbol) -> float:
+    def get_market_highest_price(symbol: YfinanceSymbol) -> float:
         highest_price_number: float = 0.0
 
         print(symbol.highest_price)
@@ -14,11 +14,11 @@ class TickerPercentageFromBottom(Logic):
         return highest_price_number
 
     @staticmethod
-    def get_current_market_price(symbol: Symbol):
+    def get_current_market_price(symbol: YfinanceSymbol):
         return symbol.current_price
 
     def main(self, market_ticker: str, start_date: datetime, end_date: datetime) -> float:
-        market_symbol = Symbol(market_ticker, start_date=start_date, end_date=end_date)
+        market_symbol = YfinanceSymbol(market_ticker, start_date=start_date, end_date=end_date)
 
         market_highest_price = self.get_market_highest_price(market_symbol)
         market_current_price = self.get_current_market_price(market_symbol)

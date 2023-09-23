@@ -8,7 +8,7 @@ from pandas import Series, DataFrame, Timestamp
 from core.components.candle.candle import Candle
 
 
-class Symbol(object):
+class YfinanceSymbol(object):
 
     def __init__(self, ticker: str, start_date: datetime, end_date: datetime):
         self.ticker = ticker
@@ -22,11 +22,14 @@ class Symbol(object):
 
     @cached_property
     def current_price(self) -> float:
-        return self.api_obj.info.get('currentPrice')
+        """Return the current price, if it's None from the API it'll return the last Close price"""
+        current_price = self.api_obj.info.get('currentPrice')
+        return current_price if current_price else self.history().iloc[-1].Close
 
     @lru_cache
     def history(self, period='1y', interval='1wk', start_date: datetime = datetime.now() - timedelta(days=365),
                 end_date: datetime = datetime.now()):
+        print(f"start_date: {start_date}, end_date: {end_date}")
         return self.api_obj.history(start=start_date, end=end_date, period=period, interval=interval)
 
     def get_latest_double_top(self, period='1y'):
@@ -147,7 +150,7 @@ if __name__ == '__main__':
     start_date = datetime.now() - timedelta(days=120)
     end_date = datetime.now()
 
-    s = Symbol(ticker='GOOG', start_date=start_date, end_date=end_date)
+    s = YfinanceSymbol(ticker='GOOG', start_date=start_date, end_date=end_date)
     print(s.current_price)
 
 # candle_groups_price_delta = s.group_candle_between_price_delta(stock_close_price_history=h, delta_price=1.5)

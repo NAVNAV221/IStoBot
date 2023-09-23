@@ -2,7 +2,7 @@ from typing import List
 from datetime import datetime, timedelta
 
 from API.alpacaAPI.client import Client
-from API.yfinanceAPI.yfinance.symbol import Symbol
+from API.yfinanceAPI.yfinance.yfinancesymbol import YfinanceSymbol
 from bot.Alerts.sms.sms import Sms
 from bot.flows.flow import Flow
 from bot.logics.bear_market.is_bear_market import BearMarketLogic
@@ -41,7 +41,7 @@ class ShortTermTechnologyFlow(Flow):
             self.logger.info(f'Message sent')
 
             for ticker in matched_scanner_tickers:
-                s = Symbol(ticker=ticker)
+                s = YfinanceSymbol(ticker=ticker)
 
                 try:
                     client.buy_stock(symbol=s, quantity=QUANTITY_PER_STOCK)
